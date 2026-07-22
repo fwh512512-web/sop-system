@@ -401,13 +401,25 @@ function subClick(h2id,h1id,el){
   if(sq)clrSearch();
   goPage(h1id);
   setTimeout(function(){
-    var t=document.getElementById('sec-'+h2id);
-    if(t)t.scrollIntoView({behavior:'smooth',block:'start'});
+    scrollToSec(h2id);
   },120);
   var scis=document.querySelectorAll('.sci');
   for(var i=0;i<scis.length;i++)scis[i].classList.remove('active');
   el.classList.add('active');
   if(window.innerWidth<=768)tSb();
+}
+function scrollToSec(id){
+  var t=document.getElementById('sec-'+id);
+  if(!t)return;
+  var tb=document.querySelector('.tb');
+  var eb=document.getElementById('ebar');
+  var bn=document.getElementById('banner');
+  var offset=16; // 額外留白
+  if(tb) offset+=tb.offsetHeight;
+  if(eb && eb.style.display==='flex') offset+=eb.offsetHeight;
+  if(bn && bn.style.display==='flex') offset+=bn.offsetHeight;
+  var top=t.getBoundingClientRect().top+window.pageYOffset-offset;
+  window.scrollTo({top:top,behavior:'smooth'});
 }
 
 /* ── 搜尋 ── */
