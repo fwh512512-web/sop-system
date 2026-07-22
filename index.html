@@ -54,8 +54,10 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .tb-cr b{color:var(--text);font-weight:600}
 .tb-r{margin-left:auto;display:flex;align-items:center;gap:10px}
 .sv-btn{padding:6px 16px;border-radius:6px;background:var(--accent);color:#fff;border:none;font-family:var(--font);font-size:13px;font-weight:500;cursor:pointer;display:none;transition:background .15s}
-.sv-btn-float{position:fixed;bottom:24px;right:24px;padding:10px 20px;border-radius:20px;background:var(--accent);color:#fff;border:none;font-family:var(--font);font-size:14px;font-weight:600;cursor:pointer;display:none;box-shadow:0 4px 16px rgba(74,124,89,.4);transition:all .15s;z-index:150}
-.sv-btn-float:hover{background:var(--accent-h);transform:scale(1.04)}
+.sv-btn-float{position:fixed;bottom:24px;right:24px;padding:10px 20px;border-radius:20px;background:#ccc;color:#fff;border:none;font-family:var(--font);font-size:14px;font-weight:600;cursor:default;box-shadow:0 2px 8px rgba(0,0,0,.15);transition:all .3s;z-index:150;opacity:0.5}
+.sv-btn-float.active{background:var(--accent);cursor:pointer;opacity:1;box-shadow:0 4px 16px rgba(74,124,89,.45)}
+.sv-btn-float.active:hover{background:var(--accent-h);transform:scale(1.04)}
+.sv-btn-float.saved{background:#2D7D46}
 .sv-btn:hover{background:var(--accent-h)}
 .sv-ind{font-size:12px;color:var(--muted);display:none}
 #sb-banner{display:none;background:var(--accent-l);border-bottom:1px solid #C5DFC9;padding:8px 32px;font-size:13px;color:var(--accent);align-items:center;gap:8px}
@@ -251,7 +253,7 @@ mark{background:#FFE066;color:inherit;border-radius:2px;padding:0 1px}
   </div>
 </div></div></div>
 
-<button class="sv-btn-float" id="sv-float" onclick="saveData()">💾 儲存</button>
+<button class="sv-btn-float" id="sv-float" onclick="doSave()">💾 儲存</button>
 <div id="toast" role="status" aria-live="polite"></div>
 
 <script>
@@ -289,6 +291,7 @@ async function saveData(){
     });
     if(!r.ok)throw 0;
     setInd('saved');toast('✅ 已儲存');buildNav();
+    const sf=document.getElementById('sv-float');sf.classList.add('saved');setTimeout(()=>sf.classList.remove('saved'),2000);
   }catch{setInd('err');toast('❌ 儲存失敗，請重試');}
 }
 
@@ -516,7 +519,7 @@ function enterEdit(){
   document.getElementById('ebl').textContent='退出編輯模式';
   document.getElementById('ebar').style.display='flex';
   document.getElementById('svbtn').style.display='';
-  document.getElementById('sv-float').style.display='';
+  document.getElementById('sv-float').classList.add('active');
   render();buildNav();
 }
 function exitEdit(){
@@ -525,7 +528,7 @@ function exitEdit(){
   document.getElementById('ebl').textContent='進入編輯模式';
   document.getElementById('ebar').style.display='none';
   document.getElementById('svbtn').style.display='none';
-  document.getElementById('sv-float').style.display='none';
+  document.getElementById('sv-float').classList.remove('active','saved');
   document.getElementById('svind').style.display='none';
   render();buildNav();
 }
@@ -619,6 +622,10 @@ async function procImg(file){
 }
 
 // ── UI ──
+function doSave(){
+  if(!isEdit){toast('⚠️ 請先進入編輯模式');return;}
+  saveData();
+}
 function toggleSb(){document.getElementById('sidebar').classList.toggle('open');}
 function toast(msg){const e=document.getElementById('toast');e.textContent=msg;e.style.display='flex';clearTimeout(e._t);e._t=setTimeout(()=>e.style.display='none',2800);}
 
