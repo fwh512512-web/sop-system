@@ -124,6 +124,27 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .vimw img{width:100%;height:auto;display:block}
 .vimw figcaption{font-size:12px;color:var(--muted);padding:6px 12px;background:var(--bg);border-top:1px solid var(--border)}
 
+/* 跳轉對齊修正：預留頂部固定列高度 */
+.bw[id^="sec-"]{scroll-margin-top:120px}
+
+/* 回到頂部按鈕 */
+.top-btn{position:fixed;bottom:24px;right:150px;width:40px;height:40px;border-radius:50%;background:var(--surface);color:var(--muted);border:1px solid var(--border-s);cursor:pointer;display:none;align-items:center;justify-content:center;font-size:16px;box-shadow:var(--shadow);transition:all .15s;z-index:150}
+.top-btn:hover{color:var(--accent);border-color:var(--accent);transform:translateY(-2px)}
+
+/* 頁面切換淡入動畫 */
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.cw>*{animation:fadeIn .25s ease}
+
+/* 閱讀模式 hover 提升可讀性 */
+body:not(.editing) .bw:hover{background:rgba(0,0,0,.015);border-radius:6px}
+
+/* 列印樣式：乾淨輸出 */
+@media print{
+  #sidebar,.tb,.hbg,#ebar,.sv-btn-float,.top-btn,#sb-banner{display:none!important}
+  #main{margin-left:0}
+  .cw{max-width:100%;padding:0}
+}
+
 /* 搜尋高亮 */
 mark{background:#FFE066;color:inherit;border-radius:2px;padding:0 1px}
 
@@ -253,6 +274,7 @@ mark{background:#FFE066;color:inherit;border-radius:2px;padding:0 1px}
   </div>
 </div></div></div>
 
+<button class="top-btn" id="top-btn" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="回到頂部" aria-label="回到頂部">↑</button>
 <button class="sv-btn-float" id="sv-float" onclick="doSave()">💾 儲存</button>
 <div id="toast" role="status" aria-live="polite"></div>
 
@@ -475,7 +497,7 @@ function jmp2(h2Id, h1Id, el){
   setTimeout(()=>{
     const t=document.getElementById('sec-'+h2Id);
     if(t) t.scrollIntoView({behavior:'smooth',block:'start'});
-  },80);
+  },150);
   document.querySelectorAll('.sci').forEach(n=>n.classList.remove('active'));
   el.classList.add('active');
   if(window.innerWidth<=768) toggleSb();
@@ -520,6 +542,7 @@ function enterEdit(){
   document.getElementById('ebar').style.display='flex';
   document.getElementById('svbtn').style.display='';
   document.getElementById('sv-float').classList.add('active');
+  document.body.classList.add('editing');
   render();buildNav();
 }
 function exitEdit(){
@@ -529,6 +552,7 @@ function exitEdit(){
   document.getElementById('ebar').style.display='none';
   document.getElementById('svbtn').style.display='none';
   document.getElementById('sv-float').classList.remove('active','saved');
+  document.body.classList.remove('editing');
   document.getElementById('svind').style.display='none';
   render();buildNav();
 }
@@ -626,6 +650,10 @@ function doSave(){
   if(!isEdit){toast('⚠️ 請先進入編輯模式');return;}
   saveData();
 }
+window.addEventListener('scroll',()=>{
+  const btn=document.getElementById('top-btn');
+  if(btn) btn.style.display = window.scrollY>400 ? 'flex' : 'none';
+});
 function toggleSb(){document.getElementById('sidebar').classList.toggle('open');}
 function toast(msg){const e=document.getElementById('toast');e.textContent=msg;e.style.display='flex';clearTimeout(e._t);e._t=setTimeout(()=>e.style.display='none',2800);}
 
@@ -963,6 +991,15 @@ function def(){return[
   {id:uid(),type:'step',text:'封面寫上當天結帳日期 + 交班晚班簽名'},
   {id:uid(),type:'note',text:'做得清楚、乾淨，使人查帳方便是基本素養，請勿偷懶'},
 ];}
+let hasUnsaved=false;
+document.addEventListener('input',e=>{if(isEdit&&e.target.isContentEditable)hasUnsaved=true;});
+window.addEventListener('beforeunload',e=>{
+  if(isEdit&&hasUnsaved){e.preventDefault();e.returnValue='';}
+});
+// 儲存後清除未儲存標記
+const _origSave=saveData;
+saveData=async function(){await _origSave();hasUnsaved=false;};
+
 loadData();
 </script>
 </body>
