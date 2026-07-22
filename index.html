@@ -168,7 +168,7 @@ mark{background:#FFE066;color:inherit;border-radius:2px;padding:0 1px}
   <div class="sn" id="sn"><div style="padding:12px 14px;font-size:12px;color:#8E8E93">載入中…</div></div>
   <div class="sf">
   <button class="seb" id="ebt" onclick="toggleEdit()">✏️ <span id="ebl">進入編輯模式</span></button>
-  <button id="chpwd-btn" onclick="openChPwd()" style="display:none;width:100%;margin-top:6px;padding:7px;background:transparent;border:1px solid #3A3A3C;border-radius:6px;color:var(--sb-muted);font-family:var(--font);font-size:11px;cursor:pointer;transition:all .15s" onmouseover="this.style.borderColor='var(--accent)';this.style.color='#A8D5B5'" onmouseout="this.style.borderColor='#3A3A3C';this.style.color='var(--sb-muted)'">🔑 修改密碼</button>
+
 </div>
 </nav>
 <div id="main">
@@ -232,28 +232,13 @@ mark{background:#FFE066;color:inherit;border-radius:2px;padding:0 1px}
 </div></div></div>
 <button class="top-btn" id="top-btn" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="回到頂部" aria-label="回到頂部">↑</button>
 <button class="sv-btn-float" id="sv-float" onclick="doSave()">💾 儲存</button>
-<div id="chpwd-modal" style="display:none"><div class="mb"><div class="md">
-  <h3>🔑 修改密碼</h3>
-  <label>目前密碼</label>
-  <input type="password" id="cp-old" placeholder="輸入目前密碼">
-  <label>新密碼</label>
-  <input type="password" id="cp-new" placeholder="輸入新密碼">
-  <label>確認新密碼</label>
-  <input type="password" id="cp-confirm" placeholder="再輸入一次新密碼">
-  <div id="cp-err" style="color:var(--danger);font-size:12px;margin-top:-6px;margin-bottom:8px;display:none"></div>
-  <div class="md-btns">
-    <button class="btn bg2" onclick="closeChPwd()">取消</button>
-    <button class="btn bp" onclick="doChPwd()">確認修改</button>
-  </div>
-</div></div></div>
+
 <div id="toast" role="status" aria-live="polite"></div>
 <script>
 const CFG={
   BIN:'6a603f6cf5f4af5e29af2fa1',
   KEY:'$2a$10$gMxDaF3CQfAsAvbqEQpgDOmNNFmz9CXKzA7pgg0u2Lb0pMkrxVQAW',
-  CLD:'db1pzd5xq',PRE:'sop_upload',
-  get PWD(){ return localStorage.getItem('sop_pwd')||'1234'; },
-  set PWD(v){ localStorage.setItem('sop_pwd',v); }
+  CLD:'db1pzd5xq',PRE:'sop_upload',PWD:'1234'
 };
 let blocks=[],isEdit=false,imgBid=null,upUrl='',sq='',currentPageId=null;
 
@@ -467,7 +452,6 @@ function enterEdit(){
   document.getElementById('svbtn').style.display='';
   document.getElementById('sv-float').classList.add('active');
   document.body.classList.add('editing');
-  document.getElementById('chpwd-btn').style.display='';
   render();buildNav();
 }
 function exitEdit(){
@@ -478,7 +462,6 @@ function exitEdit(){
   document.getElementById('svbtn').style.display='none';
   document.getElementById('sv-float').classList.remove('active','saved');
   document.body.classList.remove('editing');
-  document.getElementById('chpwd-btn').style.display='none';
   document.getElementById('svind').style.display='none';
   render();buildNav();
 }
@@ -573,30 +556,7 @@ async function procImg(file){
 }
 
 function doSave(){if(!isEdit){toast('⚠️ 請先進入編輯模式');return;}saveData();}
-function openChPwd(){
-  document.getElementById('cp-old').value='';
-  document.getElementById('cp-new').value='';
-  document.getElementById('cp-confirm').value='';
-  document.getElementById('cp-err').style.display='none';
-  document.getElementById('chpwd-modal').style.display='';
-  setTimeout(()=>document.getElementById('cp-old').focus(),50);
-}
-function closeChPwd(){
-  document.getElementById('chpwd-modal').style.display='none';
-}
-function doChPwd(){
-  const oldV=document.getElementById('cp-old').value;
-  const newV=document.getElementById('cp-new').value;
-  const confirmV=document.getElementById('cp-confirm').value;
-  const errEl=document.getElementById('cp-err');
-  errEl.style.display='none';
-  if(oldV!==CFG.PWD){errEl.textContent='目前密碼錯誤';errEl.style.display='';return;}
-  if(newV.length<4){errEl.textContent='新密碼至少需要 4 個字元';errEl.style.display='';return;}
-  if(newV!==confirmV){errEl.textContent='兩次輸入的新密碼不一致';errEl.style.display='';return;}
-  CFG.PWD=newV;
-  closeChPwd();
-  toast('✅ 密碼已修改成功');
-}
+
 function toggleSb(){document.getElementById('sidebar').classList.toggle('open');}
 function toast(msg){const e=document.getElementById('toast');e.textContent=msg;e.style.display='flex';clearTimeout(e._t);e._t=setTimeout(()=>e.style.display='none',2800);}
 window.addEventListener('scroll',()=>{const b=document.getElementById('top-btn');if(b)b.style.display=window.scrollY>400?'flex':'none';});
