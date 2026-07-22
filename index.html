@@ -54,6 +54,8 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .tb-cr b{color:var(--text);font-weight:600}
 .tb-r{margin-left:auto;display:flex;align-items:center;gap:10px}
 .sv-btn{padding:6px 16px;border-radius:6px;background:var(--accent);color:#fff;border:none;font-family:var(--font);font-size:13px;font-weight:500;cursor:pointer;display:none;transition:background .15s}
+.sv-btn-float{position:fixed;bottom:24px;right:24px;padding:10px 20px;border-radius:20px;background:var(--accent);color:#fff;border:none;font-family:var(--font);font-size:14px;font-weight:600;cursor:pointer;display:none;box-shadow:0 4px 16px rgba(74,124,89,.4);transition:all .15s;z-index:150}
+.sv-btn-float:hover{background:var(--accent-h);transform:scale(1.04)}
 .sv-btn:hover{background:var(--accent-h)}
 .sv-ind{font-size:12px;color:var(--muted);display:none}
 #sb-banner{display:none;background:var(--accent-l);border-bottom:1px solid #C5DFC9;padding:8px 32px;font-size:13px;color:var(--accent);align-items:center;gap:8px}
@@ -184,7 +186,7 @@ mark{background:#FFE066;color:inherit;border-radius:2px;padding:0 1px}
 
 <div id="main">
   <div class="tb">
-    <div class="tb-cr">路境行旅 <b>知識庫</b></div>
+    <div class="tb-cr" id="topbar-crumb">路境行旅 <b>知識庫</b></div>
     <div class="tb-r">
       <span class="sv-ind" id="svind"></span>
       <button class="sv-btn" id="svbtn" onclick="saveData()">💾 儲存</button>
@@ -193,7 +195,7 @@ mark{background:#FFE066;color:inherit;border-radius:2px;padding:0 1px}
 
   <div id="sb-banner"><span>🔍</span><span id="sbt"></span><button onclick="clearSearch()" aria-label="清除">✕</button></div>
 
-  <div id="ebar">
+  <div id="ebar" style="position:sticky;top:50px;z-index:49;box-shadow:0 2px 8px rgba(0,0,0,.08)">
     <div class="ebar-types">
       <span class="lbl">新增</span>
       <button class="ab" onclick="addBlock('h1')"><span class="bdg bh1">大標</span>大標題</button>
@@ -249,6 +251,7 @@ mark{background:#FFE066;color:inherit;border-radius:2px;padding:0 1px}
   </div>
 </div></div></div>
 
+<button class="sv-btn-float" id="sv-float" onclick="saveData()">💾 儲存</button>
 <div id="toast" role="status" aria-live="polite"></div>
 
 <script>
@@ -259,6 +262,7 @@ const CFG={
 };
 
 let blocks=[],isEdit=false,imgBid=null,upUrl='',sq='';
+let currentPageId = null; // 目前顯示的大標題 ID
 
 // ── 資料 ──
 async function loadData(){
@@ -268,7 +272,11 @@ async function loadData(){
     const j=await r.json();
     blocks=(j.record.blocks||[]).filter(b=>b&&b.id&&b.type);
   }catch{blocks=def();toast('⚠️ 無法連線，顯示預設資料');}
-  render();buildNav();
+  buildNav();
+  // 預設顯示第一個大標題
+  const firstH1 = blocks.find(b=>b.type==='h1');
+  if(firstH1) switchPage(firstH1.id);
+  else render();
 }
 
 async function saveData(){
@@ -281,7 +289,7 @@ async function saveData(){
     });
     if(!r.ok)throw 0;
     setInd('saved');toast('✅ 已儲存');buildNav();
-  }catch{setInd('err');toast('❌ 儲存失敗');}
+  }catch{setInd('err');toast('❌ 儲存失敗，請重試');}
 }
 
 function syncDOM(){blocks.forEach(b=>{const e=document.getElementById('t-'+b.id);if(e)b.text=e.innerText.trim();});}
@@ -292,7 +300,33 @@ function setInd(s){
   e.textContent=s==='saving'?'儲存中…':s==='saved'?'✓ 已儲存':'儲存失敗';
 }
 
-// ── 渲染 ──
+// ── 切換頁面 ──
+function switchPage(h1Id){
+  currentPageId = h1Id;
+  // 更新側邊欄 active 狀態
+  document.querySelectorAll('.si').forEach(n=>n.classList.remove('active'));
+  const navItem = document.querySelector(`.si[data-id="${h1Id}"]`);
+  if(navItem){
+    navItem.classList.add('active');
+    // 展開子項
+    const ch=navItem.nextElementSibling;
+    if(ch&&ch.classList.contains('sc')){
+      navItem.classList.add('open');
+      ch.classList.add('open');
+    }
+  }
+  // 更新頂部麵包屑
+  const h1Block = blocks.find(b=>b.id===h1Id);
+  if(h1Block){
+    document.getElementById('topbar-crumb').innerHTML = `路境行旅 <b>${esc(h1Block.text)}</b>`;
+  }
+  render();
+  // 回到頂部
+  document.getElementById('cw').scrollTop = 0;
+  window.scrollTo(0,0);
+}
+
+// ── 渲染（只顯示目前頁面） ──
 function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
 function hl(s){
   if(!sq||!s)return s;
@@ -314,19 +348,43 @@ function ctrl(b,i){
   </div>`;
 }
 
+function getPageBlocks(){
+  if(!currentPageId) return [];
+  // 找到目前 h1 的 index
+  const h1i = blocks.findIndex(b=>b.id===currentPageId);
+  if(h1i<0) return [];
+  // 找到下一個 h1 的 index
+  const nexth1i = blocks.findIndex((b,i)=>i>h1i&&b.type==='h1');
+  return nexth1i<0 ? blocks.slice(h1i) : blocks.slice(h1i, nexth1i);
+}
+
 function render(){
   const cw=document.getElementById('cw');
-  if(!blocks.length){
-    cw.innerHTML=`<div class="empty-st"><div class="ei">📋</div><h3>尚無內容</h3><p>${isEdit?'點上方按鈕新增第一個區塊':'請聯絡管理員新增內容'}</p></div>`;
+
+  // 搜尋模式：顯示所有符合結果
+  if(sq){
+    renderSearch(cw);
     return;
   }
-  let h='',stepN=0,inSec=false;
-  blocks.forEach((b,i)=>{
+
+  if(!currentPageId){
+    cw.innerHTML=`<div class="empty-st"><div class="ei">📋</div><h3>請從左側選擇主題</h3><p>點擊左側目錄開始瀏覽</p></div>`;
+    return;
+  }
+
+  const pageBlocks = getPageBlocks();
+  if(!pageBlocks.length){
+    cw.innerHTML=`<div class="empty-st"><div class="ei">📋</div><h3>此頁面尚無內容</h3><p>${isEdit?'點上方按鈕新增區塊':''}</p></div>`;
+    return;
+  }
+
+  let h='',stepN=0;
+  pageBlocks.forEach((b,pi)=>{
+    // 取得在全域 blocks 中的真實 index
+    const i = blocks.indexOf(b);
     const tx=hl(esc(b.text||''));
     if(b.type==='h1'){
-      if(inSec)h+='</div>';
-      h+=`<div class="psec" id="sec-${b.id}">`;
-      inSec=true;stepN=0;
+      stepN=0;
       h+=`<div class="bw">${ctrl(b,i)}<div class="vh1-wrap"><div ${ea(b)}class="vh1" id="t-${b.id}">${tx}</div><div class="vh1-line"></div></div></div>`;
     }else if(b.type==='h2'){
       stepN=0;
@@ -342,12 +400,35 @@ function render(){
       h+=`<div class="bw">${ctrl(b,i)}<div class="vimw"><figure><img src="${esc(b.url||'')}" alt="${esc(b.text||'')}" loading="lazy"><figcaption>${esc(b.text||'')}</figcaption></figure>${isEdit?`<button class="ab" style="margin-top:6px" onclick="openImg('${b.id}')">🔄 更換圖片</button>`:''}</div></div>`;
     }
   });
-  if(inSec)h+='</div>';
-  if(!h)h=`<div class="empty-st"><div class="ei">🔍</div><h3>找不到「${esc(sq)}」</h3><p>請試試其他關鍵字</p></div>`;
+  cw.innerHTML = h || `<div class="empty-st"><div class="ei">✨</div><h3>點上方按鈕新增第一個區塊</h3></div>`;
+}
+
+function renderSearch(cw){
+  const matched = blocks.filter(b=>(b.text||'').toLowerCase().includes(sq));
+  if(!matched.length){
+    cw.innerHTML=`<div class="empty-st"><div class="ei">🔍</div><h3>找不到「${esc(sq)}」</h3><p>請試試其他關鍵字</p></div>`;
+    return;
+  }
+  let h='<div style="padding:0 0 16px"><b style="font-size:13px;color:var(--muted)">搜尋結果</b></div>';
+  let stepN=0,lastH1='';
+  matched.forEach(b=>{
+    const i=blocks.indexOf(b);
+    const tx=hl(esc(b.text||''));
+    // 顯示所屬大標題
+    const h1 = blocks.slice(0,i).reverse().find(x=>x.type==='h1');
+    if(h1&&h1.text!==lastH1){
+      h+=`<div style="font-size:11px;color:var(--accent);font-weight:600;text-transform:uppercase;letter-spacing:.06em;margin:16px 0 6px;cursor:pointer" onclick="switchPage('${h1.id}')">${esc(h1.text)} ›</div>`;
+      lastH1=h1.text;stepN=0;
+    }
+    if(b.type==='h2'){h+=`<div class="bw"><div class="vh2-bar"></div><div class="vh2">${tx}</div></div>`;}
+    else if(b.type==='h3'){h+=`<div class="bw"><div class="vh3">${tx}</div></div>`;}
+    else if(b.type==='step'){stepN++;h+=`<div class="bw"><div class="vstw"><div class="vsn">${stepN}</div><div class="vst">${tx}</div></div></div>`;}
+    else if(b.type==='note'){h+=`<div class="bw"><div class="vntw"><span class="vnti">⚠️</span><div class="vnt">${tx}</div></div></div>`;}
+  });
   cw.innerHTML=h;
 }
 
-// ── 導覽 ── 修正版
+// ── 導覽 ──
 function buildNav(){
   const nav=document.getElementById('sn');
   const h1s=blocks.filter(b=>b.type==='h1');
@@ -357,7 +438,7 @@ function buildNav(){
     const h1i=blocks.indexOf(h1);
     const nxi=blocks.findIndex((b,i)=>i>h1i&&b.type==='h1');
     const h2s=blocks.filter((b,i)=>b.type==='h2'&&i>h1i&&(nxi<0||i<nxi));
-    h+=`<div class="si" data-id="${h1.id}" onclick="jmp('${h1.id}',this)">
+    h+=`<div class="si" data-id="${h1.id}" onclick="handleNavClick('${h1.id}',this)">
       <span style="flex-shrink:0">📌</span>
       <span style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(h1.text)}</span>
       ${h2s.length?'<span class="ar">›</span>':''}
@@ -365,7 +446,7 @@ function buildNav(){
     if(h2s.length){
       h+=`<div class="sc">`;
       h2s.forEach(h2=>{
-        h+=`<div class="sci" data-id="${h2.id}" onclick="jmp2('${h2.id}',this)">📂 ${esc(h2.text)}</div>`;
+        h+=`<div class="sci" data-id="${h2.id}" onclick="jmp2('${h2.id}','${h1.id}',this)">📂 ${esc(h2.text)}</div>`;
       });
       h+=`</div>`;
     }
@@ -373,32 +454,28 @@ function buildNav(){
   nav.innerHTML=h;
 }
 
-function jmp(id,el){
-  if(isEdit)return;
-  // 展開/收合子項
+function handleNavClick(h1Id, el){
+  // 展開/收合
   const ch=el.nextElementSibling;
   if(ch&&ch.classList.contains('sc')){
     el.classList.toggle('open');
     ch.classList.toggle('open');
   }
-  scrollTo(id);
-  document.querySelectorAll('.si').forEach(n=>n.classList.remove('active'));
-  el.classList.add('active');
-  if(window.innerWidth<=768)toggleSb();
+  switchPage(h1Id);
+  if(window.innerWidth<=768) toggleSb();
 }
 
-function jmp2(id,el){
-  if(isEdit)return;
-  scrollTo(id);
+function jmp2(h2Id, h1Id, el){
+  // 先切換到該頁面
+  switchPage(h1Id);
+  // 等 render 完再滾動
+  setTimeout(()=>{
+    const t=document.getElementById('sec-'+h2Id);
+    if(t) t.scrollIntoView({behavior:'smooth',block:'start'});
+  },80);
   document.querySelectorAll('.sci').forEach(n=>n.classList.remove('active'));
   el.classList.add('active');
-  if(window.innerWidth<=768)toggleSb();
-}
-
-function scrollTo(id){
-  // H1 段落用 sec- 前綴，H2 直接用 sec- 前綴（在 bw 上）
-  const t=document.getElementById('sec-'+id);
-  if(t)t.scrollIntoView({behavior:'smooth',block:'start'});
+  if(window.innerWidth<=768) toggleSb();
 }
 
 // ── 搜尋 ──
@@ -409,10 +486,18 @@ function doSearch(v){
     const n=blocks.filter(b=>(b.text||'').toLowerCase().includes(sq)).length;
     bn.style.display='flex';
     document.getElementById('sbt').textContent=`找到 ${n} 個符合「${v}」的結果`;
-  }else bn.style.display='none';
+    render();
+  }else{
+    bn.style.display='none';
+    render();
+  }
+}
+function clearSearch(){
+  document.getElementById('si').value='';
+  sq='';
+  document.getElementById('sb-banner').style.display='none';
   render();
 }
-function clearSearch(){document.getElementById('si').value='';doSearch('');}
 
 // ── 編輯模式 ──
 function toggleEdit(){
@@ -431,6 +516,7 @@ function enterEdit(){
   document.getElementById('ebl').textContent='退出編輯模式';
   document.getElementById('ebar').style.display='flex';
   document.getElementById('svbtn').style.display='';
+  document.getElementById('sv-float').style.display='';
   render();buildNav();
 }
 function exitEdit(){
@@ -439,25 +525,49 @@ function exitEdit(){
   document.getElementById('ebl').textContent='進入編輯模式';
   document.getElementById('ebar').style.display='none';
   document.getElementById('svbtn').style.display='none';
+  document.getElementById('sv-float').style.display='none';
   document.getElementById('svind').style.display='none';
   render();buildNav();
 }
 
-// ── 新增/移動/刪除 ──
+// ── 新增區塊 ──
 function addBlock(type){
   if(type==='img'){openImg(null);return;}
   syncDOM();
+  // 找到目前頁面最後一個區塊的位置，插入在後面
+  const pageBlocks=getPageBlocks();
+  const lastBlock=pageBlocks[pageBlocks.length-1];
+  const insertAfter=lastBlock?blocks.indexOf(lastBlock):-1;
   const placeholder={h1:'大標題名稱',h2:'副標題',h3:'小標題',step:'在這裡輸入步驟說明',note:'在這裡輸入注意事項'}[type]||'';
   const b={id:uid(),type,text:placeholder};
-  blocks.push(b);
-  render();buildNav();
+  // h1 插在目前頁面之後，其他插在頁面最後
+  if(type==='h1'){
+    blocks.splice(insertAfter+1,0,b);
+  } else {
+    if(insertAfter>=0) blocks.splice(insertAfter+1,0,b);
+    else blocks.push(b);
+  }
+  if(type!=='h1') render();
+  else { buildNav(); switchPage(b.id); }
   setTimeout(()=>{
     const e=document.getElementById('t-'+b.id);
     if(e){e.focus();const r=document.createRange();r.selectNodeContents(e);window.getSelection().removeAllRanges();window.getSelection().addRange(r);}
-  },60);
+  },80);
 }
-function mv(i,d){syncDOM();const j=i+d;if(j<0||j>=blocks.length)return;[blocks[i],blocks[j]]=[blocks[j],blocks[i]];render();buildNav();}
-function del(i){if(!confirm('確定刪除？'))return;syncDOM();blocks.splice(i,1);render();buildNav();}
+
+function mv(i,d){
+  syncDOM();
+  const j=i+d;
+  if(j<0||j>=blocks.length)return;
+  [blocks[i],blocks[j]]=[blocks[j],blocks[i]];
+  render();buildNav();
+}
+function del(i){
+  if(!confirm('確定刪除？'))return;
+  syncDOM();
+  blocks.splice(i,1);
+  render();buildNav();
+}
 function hkey(e){if(e.key==='Enter'&&!e.shiftKey)e.preventDefault();}
 
 // ── 圖片上傳 ──
@@ -475,7 +585,14 @@ function confirmImg(){
   const cap=document.getElementById('ic').value.trim();
   syncDOM();
   if(imgBid){const b=blocks.find(x=>x.id===imgBid);if(b){b.url=upUrl;b.text=cap;}}
-  else blocks.push({id:uid(),type:'img',url:upUrl,text:cap});
+  else{
+    const pageBlocks=getPageBlocks();
+    const lastBlock=pageBlocks[pageBlocks.length-1];
+    const insertAfter=lastBlock?blocks.indexOf(lastBlock):-1;
+    const b={id:uid(),type:'img',url:upUrl,text:cap};
+    if(insertAfter>=0) blocks.splice(insertAfter+1,0,b);
+    else blocks.push(b);
+  }
   closeImg();render();buildNav();
 }
 async function handleFile(input){if(input.files[0])await procImg(input.files[0]);}
@@ -501,7 +618,7 @@ async function procImg(file){
   }
 }
 
-// ── UI 工具 ──
+// ── UI ──
 function toggleSb(){document.getElementById('sidebar').classList.toggle('open');}
 function toast(msg){const e=document.getElementById('toast');e.textContent=msg;e.style.display='flex';clearTimeout(e._t);e._t=setTimeout(()=>e.style.display='none',2800);}
 
