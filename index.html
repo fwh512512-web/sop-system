@@ -17,8 +17,6 @@
 }
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:100vh;display:flex}
-
-/* ── Sidebar ── */
 #sidebar{width:var(--sbw);background:var(--sb-bg);display:flex;flex-direction:column;position:fixed;top:0;left:0;bottom:0;z-index:100;transition:transform .25s}
 .sh{padding:18px 16px 14px;border-bottom:1px solid #2C2C2E;flex-shrink:0}
 .sh-logo{font-size:14px;font-weight:700;color:#fff}
@@ -46,25 +44,21 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .seb{width:100%;padding:8px;background:transparent;border:1px solid #3A3A3C;border-radius:6px;color:var(--sb-muted);font-family:var(--font);font-size:12px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;transition:all .15s}
 .seb:hover{border-color:var(--accent);color:#A8D5B5}
 .seb.on{background:var(--accent);border-color:var(--accent);color:#fff}
-
-/* ── Main ── */
 #main{margin-left:var(--sbw);flex:1;min-height:100vh;display:flex;flex-direction:column}
 .tb{background:var(--surface);border-bottom:1px solid var(--border);padding:0 32px;height:50px;display:flex;align-items:center;gap:10px;position:sticky;top:0;z-index:50;box-shadow:var(--shadow)}
 .tb-cr{font-size:13px;color:var(--muted)}
 .tb-cr b{color:var(--text);font-weight:600}
 .tb-r{margin-left:auto;display:flex;align-items:center;gap:10px}
 .sv-btn{padding:6px 16px;border-radius:6px;background:var(--accent);color:#fff;border:none;font-family:var(--font);font-size:13px;font-weight:500;cursor:pointer;display:none;transition:background .15s}
-.sv-btn-float{position:fixed;bottom:24px;right:24px;padding:10px 20px;border-radius:20px;background:#ccc;color:#fff;border:none;font-family:var(--font);font-size:14px;font-weight:600;cursor:default;box-shadow:0 2px 8px rgba(0,0,0,.15);transition:all .3s;z-index:150;opacity:0.5}
+.sv-btn:hover{background:var(--accent-h)}
+.sv-ind{font-size:12px;color:var(--muted);display:none}
+.sv-btn-float{position:fixed;bottom:24px;right:24px;padding:10px 20px;border-radius:20px;background:#ccc;color:#fff;border:none;font-family:var(--font);font-size:14px;font-weight:600;cursor:default;box-shadow:0 2px 8px rgba(0,0,0,.15);transition:all .3s;z-index:150;opacity:.5}
 .sv-btn-float.active{background:var(--accent);cursor:pointer;opacity:1;box-shadow:0 4px 16px rgba(74,124,89,.45)}
 .sv-btn-float.active:hover{background:var(--accent-h);transform:scale(1.04)}
 .sv-btn-float.saved{background:#2D7D46}
-.sv-btn:hover{background:var(--accent-h)}
-.sv-ind{font-size:12px;color:var(--muted);display:none}
 #sb-banner{display:none;background:var(--accent-l);border-bottom:1px solid #C5DFC9;padding:8px 32px;font-size:13px;color:var(--accent);align-items:center;gap:8px}
 #sb-banner button{margin-left:auto;background:transparent;border:none;color:var(--accent);cursor:pointer;font-size:16px}
-
-/* ── 編輯工具列 ── */
-#ebar{display:none;background:var(--surface);border-bottom:2px solid var(--accent-l);padding:0;flex-direction:column}
+#ebar{display:none;background:var(--surface);border-bottom:2px solid var(--accent-l);padding:0;flex-direction:column;position:sticky;top:50px;z-index:49;box-shadow:0 2px 8px rgba(0,0,0,.08)}
 .ebar-types{padding:10px 32px;display:flex;align-items:center;gap:6px;flex-wrap:wrap;border-bottom:1px solid var(--border)}
 .ebar-types .lbl{font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-right:4px;flex-shrink:0}
 .ebar-hint{padding:8px 32px 10px;display:flex;gap:16px;flex-wrap:wrap}
@@ -77,86 +71,59 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .bh1{background:#E8F2EC;color:#2D6A40}.bh2{background:#E8EEFF;color:#3A5FC8}
 .bh3{background:#F3F3F3;color:#555}.bst{background:#EDFFF3;color:#1A7A3C}
 .bnt{background:#FFFBEB;color:#92610A}.bim{background:#F0F0FF;color:#5856D6}
-
-/* ── 內容 ── */
 .cw{padding:40px 48px;max-width:820px;width:100%}
-.psec{margin-bottom:52px}
-
-/* contenteditable */
 [contenteditable]{outline:none;border-radius:4px;transition:background .12s,box-shadow .12s}
 [contenteditable]:focus{background:rgba(74,124,89,.06);box-shadow:0 0 0 2px rgba(74,124,89,.25)}
 [contenteditable]:hover:not(:focus){background:rgba(0,0,0,.025)}
-
-/* block wrapper */
 .bw{position:relative;display:flex;align-items:flex-start;gap:0;margin:1px 0}
 .bc{display:none;align-items:center;flex-shrink:0;margin-top:3px}
 .bw:hover .bc{display:flex}
 .cb{background:transparent;border:none;cursor:pointer;width:22px;height:22px;border-radius:4px;color:var(--muted);font-size:12px;display:flex;align-items:center;justify-content:center;transition:all .12s}
 .cb:hover{background:var(--bg);color:var(--text)}
 .cb.dl:hover{background:#FFF0EF;color:var(--danger)}
-
-/* H1 - 大標題 */
 .vh1-wrap{flex:1}
 .vh1{font-size:24px;font-weight:700;color:var(--text);letter-spacing:-.02em;padding:2px 6px;min-height:36px;display:block;width:100%;white-space:pre-wrap}
 .vh1-line{height:3px;background:linear-gradient(90deg,var(--accent),transparent);border-radius:2px;margin:4px 0 20px 6px}
-
-/* H2 - 副標題 */
 .vh2{font-size:16px;font-weight:600;color:#2D6A40;padding:2px 6px;min-height:26px;display:flex;align-items:center;gap:8px;margin-top:22px;margin-bottom:6px;flex:1;white-space:pre-wrap}
 .vh2-bar{width:4px;height:17px;background:var(--accent);border-radius:2px;flex-shrink:0;margin-top:22px}
-
-/* H3 - 小標題 */
 .vh3{font-size:14px;font-weight:600;color:var(--text);padding:2px 6px 2px 28px;min-height:24px;display:block;margin-top:10px;margin-bottom:4px;flex:1;white-space:pre-wrap;position:relative}
 .vh3::before{content:'◆';position:absolute;left:12px;top:3px;font-size:8px;color:var(--border-s)}
-
-/* Step */
 .vstw{display:flex;align-items:flex-start;gap:10px;padding:4px 0;flex:1}
 .vsn{min-width:22px;height:22px;background:var(--accent);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;margin-top:2px}
 .vst{font-size:14px;line-height:1.7;color:var(--text);padding:1px 4px;flex:1;min-height:24px;white-space:pre-wrap}
-
-/* Note */
 .vntw{display:flex;align-items:flex-start;gap:8px;background:var(--warn-bg);border-left:3px solid var(--warn-br);padding:10px 14px;border-radius:0 6px 6px 0;margin:6px 0;flex:1}
 .vnti{flex-shrink:0;font-size:14px;margin-top:1px}
 .vnt{font-size:13px;color:#78580A;flex:1;padding:1px 4px;min-height:22px;white-space:pre-wrap}
-
-/* Img */
 .vimw{margin:10px 0;flex:1}
 .vimw figure{border:1px solid var(--border);border-radius:8px;overflow:hidden;max-width:580px}
 .vimw img{width:100%;height:auto;display:block}
 .vimw figcaption{font-size:12px;color:var(--muted);padding:6px 12px;background:var(--bg);border-top:1px solid var(--border)}
-
-/* 跳轉對齊修正：預留頂部固定列高度 */
+/* 插入區塊列 */
+.insert-bar{display:none;align-items:center;gap:6px;padding:2px 0;margin:-1px 0}
+.bw:hover + .insert-bar,.insert-bar:hover{display:flex}
+.insert-line{flex:1;height:1px;background:var(--accent);opacity:.25}
+.insert-btns{display:flex;gap:4px;flex-wrap:wrap}
+.insert-btn{padding:2px 9px;border-radius:10px;background:var(--accent-l);color:var(--accent);border:1px solid #C5DFC9;font-size:11px;font-weight:600;cursor:pointer;white-space:nowrap;transition:all .15s;line-height:1.6}
+.insert-btn:hover{background:var(--accent);color:#fff}
+/* 跳轉對齊 */
 .bw[id^="sec-"]{scroll-margin-top:120px}
-
-/* 回到頂部按鈕 */
-.top-btn{position:fixed;bottom:24px;right:150px;width:40px;height:40px;border-radius:50%;background:var(--surface);color:var(--muted);border:1px solid var(--border-s);cursor:pointer;display:none;align-items:center;justify-content:center;font-size:16px;box-shadow:var(--shadow);transition:all .15s;z-index:150}
+/* 回到頂部 */
+.top-btn{position:fixed;bottom:80px;right:24px;width:40px;height:40px;border-radius:50%;background:var(--surface);color:var(--muted);border:1px solid var(--border-s);cursor:pointer;display:none;align-items:center;justify-content:center;font-size:16px;box-shadow:var(--shadow);transition:all .15s;z-index:150}
 .top-btn:hover{color:var(--accent);border-color:var(--accent);transform:translateY(-2px)}
-
-/* 頁面切換淡入動畫 */
+/* 淡入動畫 */
 @keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
-.cw>*{animation:fadeIn .25s ease}
-
-/* 閱讀模式 hover 提升可讀性 */
+.cw>*{animation:fadeIn .2s ease}
+/* 閱讀 hover */
 body:not(.editing) .bw:hover{background:rgba(0,0,0,.015);border-radius:6px}
-
-/* 列印樣式：乾淨輸出 */
-@media print{
-  #sidebar,.tb,.hbg,#ebar,.sv-btn-float,.top-btn,#sb-banner{display:none!important}
-  #main{margin-left:0}
-  .cw{max-width:100%;padding:0}
-}
-
-/* 搜尋高亮 */
+/* 列印 */
+@media print{#sidebar,.tb,.hbg,#ebar,.sv-btn-float,.top-btn,#sb-banner{display:none!important}#main{margin-left:0}.cw{max-width:100%;padding:0}}
 mark{background:#FFE066;color:inherit;border-radius:2px;padding:0 1px}
-
-/* Empty / Loading */
 .empty-st{text-align:center;padding:80px 20px;color:var(--muted)}
 .empty-st .ei{font-size:40px;margin-bottom:12px}
 .empty-st h3{font-size:16px;font-weight:500;margin-bottom:6px;color:var(--text)}
 .ld{text-align:center;padding:60px;color:var(--muted);font-size:14px}
 .sp{width:28px;height:28px;border:3px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 12px}
 @keyframes spin{to{transform:rotate(360deg)}}
-
-/* Modal */
 .mb{position:fixed;inset:0;background:rgba(0,0,0,.45);display:flex;align-items:center;justify-content:center;z-index:200;padding:20px}
 .md{background:var(--surface);border-radius:12px;padding:24px;width:100%;max-width:440px;box-shadow:var(--shadow-md)}
 .md h3{font-size:15px;font-weight:600;margin-bottom:14px}
@@ -175,12 +142,8 @@ mark{background:#FFE066;color:inherit;border-radius:2px;padding:0 1px}
 .uai{font-size:28px}
 .upr{max-width:100%;max-height:140px;border-radius:6px;margin-bottom:6px;border:1px solid var(--border)}
 .ust{font-size:12px;color:var(--muted);margin-bottom:8px}
-
-/* Toast */
-#toast{position:fixed;bottom:24px;right:24px;background:#1C1C1E;color:#fff;padding:10px 16px;border-radius:8px;font-size:13px;font-weight:500;z-index:999;display:none;align-items:center;gap:8px;box-shadow:var(--shadow-md);animation:su .2s ease}
-@keyframes su{from{transform:translateY(8px);opacity:0}to{transform:translateY(0);opacity:1}}
-
-/* RWD */
+#toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#1C1C1E;color:#fff;padding:10px 16px;border-radius:8px;font-size:13px;font-weight:500;z-index:999;display:none;align-items:center;gap:8px;box-shadow:var(--shadow-md);animation:su .2s ease;white-space:nowrap}
+@keyframes su{from{transform:translateX(-50%) translateY(8px);opacity:0}to{transform:translateX(-50%) translateY(0);opacity:1}}
 .hbg{display:none;position:fixed;top:10px;left:10px;z-index:300;background:var(--sb-bg);border:none;color:#fff;width:34px;height:34px;border-radius:6px;cursor:pointer;font-size:17px;align-items:center;justify-content:center}
 @media(max-width:768px){
   #sidebar{transform:translateX(-100%)}
@@ -188,7 +151,7 @@ mark{background:#FFE066;color:inherit;border-radius:2px;padding:0 1px}
   #main{margin-left:0}
   .cw{padding:20px}
   .tb{padding:0 16px 0 52px}
-  #ebar .ebar-types,#ebar .ebar-hint{padding-left:16px;padding-right:16px}
+  .ebar-types,.ebar-hint{padding-left:16px!important;padding-right:16px!important}
   #sb-banner{padding:8px 16px}
   .hbg{display:flex}
 }
@@ -196,7 +159,6 @@ mark{background:#FFE066;color:inherit;border-radius:2px;padding:0 1px}
 </head>
 <body>
 <button class="hbg" onclick="toggleSb()" aria-label="選單">☰</button>
-
 <nav id="sidebar">
   <div class="sh"><div class="sh-logo">路境行旅文化館</div><div class="sh-sub">知識庫</div></div>
   <div class="ss">
@@ -204,9 +166,11 @@ mark{background:#FFE066;color:inherit;border-radius:2px;padding:0 1px}
     <input type="text" id="si" placeholder="搜尋關鍵字…" oninput="doSearch(this.value)" aria-label="搜尋">
   </div>
   <div class="sn" id="sn"><div style="padding:12px 14px;font-size:12px;color:#8E8E93">載入中…</div></div>
-  <div class="sf"><button class="seb" id="ebt" onclick="toggleEdit()">✏️ <span id="ebl">進入編輯模式</span></button></div>
+  <div class="sf">
+  <button class="seb" id="ebt" onclick="toggleEdit()">✏️ <span id="ebl">進入編輯模式</span></button>
+  <button id="chpwd-btn" onclick="openChPwd()" style="display:none;width:100%;margin-top:6px;padding:7px;background:transparent;border:1px solid #3A3A3C;border-radius:6px;color:var(--sb-muted);font-family:var(--font);font-size:11px;cursor:pointer;transition:all .15s" onmouseover="this.style.borderColor='var(--accent)';this.style.color='#A8D5B5'" onmouseout="this.style.borderColor='#3A3A3C';this.style.color='var(--sb-muted)'">🔑 修改密碼</button>
+</div>
 </nav>
-
 <div id="main">
   <div class="tb">
     <div class="tb-cr" id="topbar-crumb">路境行旅 <b>知識庫</b></div>
@@ -215,12 +179,10 @@ mark{background:#FFE066;color:inherit;border-radius:2px;padding:0 1px}
       <button class="sv-btn" id="svbtn" onclick="saveData()">💾 儲存</button>
     </div>
   </div>
-
   <div id="sb-banner"><span>🔍</span><span id="sbt"></span><button onclick="clearSearch()" aria-label="清除">✕</button></div>
-
-  <div id="ebar" style="position:sticky;top:50px;z-index:49;box-shadow:0 2px 8px rgba(0,0,0,.08)">
+  <div id="ebar">
     <div class="ebar-types">
-      <span class="lbl">新增</span>
+      <span class="lbl">新增到頁尾</span>
       <button class="ab" onclick="addBlock('h1')"><span class="bdg bh1">大標</span>大標題</button>
       <button class="ab" onclick="addBlock('h2')"><span class="bdg bh2">副標</span>副標題</button>
       <button class="ab" onclick="addBlock('h3')"><span class="bdg bh3">小標</span>小標題</button>
@@ -229,19 +191,16 @@ mark{background:#FFE066;color:inherit;border-radius:2px;padding:0 1px}
       <button class="ab" onclick="addBlock('img')"><span class="bdg bim">圖片</span>插入圖片</button>
     </div>
     <div class="ebar-hint">
-      <div class="hint-item"><span class="hint-demo bh1" style="background:#E8F2EC;color:#2D6A40">大標題</span>主要章節，會出現在左側目錄</div>
+      <div class="hint-item"><span class="hint-demo bh1" style="background:#E8F2EC;color:#2D6A40">大標題</span>主要章節，出現在左側目錄</div>
       <div class="hint-item"><span class="hint-demo bh2" style="background:#E8EEFF;color:#3A5FC8">副標題</span>章節內的分組</div>
       <div class="hint-item"><span class="hint-demo bh3" style="background:#F3F3F3;color:#555">小標題</span>副標題內的細項</div>
       <div class="hint-item"><span class="hint-demo bst" style="background:#EDFFF3;color:#1A7A3C">步驟</span>有編號的操作步驟</div>
       <div class="hint-item"><span class="hint-demo bnt" style="background:#FFFBEB;color:#92610A">注意</span>⚠️ 特別提醒</div>
-      <div class="hint-item" style="color:#999;font-size:11px">💡 新增後直接點擊文字即可修改　↑↓ 調整順序　✕ 刪除</div>
+      <div class="hint-item" style="color:#999;font-size:11px">💡 滑鼠移到任一區塊下方可插入　↑↓ 調整順序　✕ 刪除</div>
     </div>
   </div>
-
   <div class="cw" id="cw"><div class="ld"><div class="sp"></div>載入中…</div></div>
 </div>
-
-<!-- 密碼 Modal -->
 <div id="pwd-modal" style="display:none"><div class="mb"><div class="md">
   <h3>🔒 進入編輯模式</h3>
   <p class="ph">請輸入管理員密碼</p>
@@ -253,8 +212,6 @@ mark{background:#FFE066;color:inherit;border-radius:2px;padding:0 1px}
     <button class="btn bp" onclick="chkPwd()">確認</button>
   </div>
 </div></div></div>
-
-<!-- 圖片 Modal -->
 <div id="img-modal" style="display:none"><div class="mb"><div class="md">
   <h3>🖼️ 上傳圖片</h3>
   <label>說明文字（選填）</label>
@@ -273,97 +230,115 @@ mark{background:#FFE066;color:inherit;border-radius:2px;padding:0 1px}
     <button class="btn bp" onclick="confirmImg()">插入圖片</button>
   </div>
 </div></div></div>
-
 <button class="top-btn" id="top-btn" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="回到頂部" aria-label="回到頂部">↑</button>
 <button class="sv-btn-float" id="sv-float" onclick="doSave()">💾 儲存</button>
+<div id="chpwd-modal" style="display:none"><div class="mb"><div class="md">
+  <h3>🔑 修改密碼</h3>
+  <label>目前密碼</label>
+  <input type="password" id="cp-old" placeholder="輸入目前密碼">
+  <label>新密碼</label>
+  <input type="password" id="cp-new" placeholder="輸入新密碼">
+  <label>確認新密碼</label>
+  <input type="password" id="cp-confirm" placeholder="再輸入一次新密碼">
+  <div id="cp-err" style="color:var(--danger);font-size:12px;margin-top:-6px;margin-bottom:8px;display:none"></div>
+  <div class="md-btns">
+    <button class="btn bg2" onclick="closeChPwd()">取消</button>
+    <button class="btn bp" onclick="doChPwd()">確認修改</button>
+  </div>
+</div></div></div>
 <div id="toast" role="status" aria-live="polite"></div>
-
 <script>
 const CFG={
   BIN:'6a603f6cf5f4af5e29af2fa1',
   KEY:'$2a$10$gMxDaF3CQfAsAvbqEQpgDOmNNFmz9CXKzA7pgg0u2Lb0pMkrxVQAW',
-  CLD:'db1pzd5xq',PRE:'sop_upload',PWD:'1234'
+  CLD:'db1pzd5xq',PRE:'sop_upload',
+  get PWD(){ return localStorage.getItem('sop_pwd')||'1234'; },
+  set PWD(v){ localStorage.setItem('sop_pwd',v); }
 };
+let blocks=[],isEdit=false,imgBid=null,upUrl='',sq='',currentPageId=null;
 
-let blocks=[],isEdit=false,imgBid=null,upUrl='',sq='';
-let currentPageId = null; // 目前顯示的大標題 ID
-
-// ── 資料 ──
-async function loadData(){
+function loadData(){
   try{
-    const r=await fetch(`https://api.jsonbin.io/v3/b/${CFG.BIN}/latest`,{headers:{'X-Master-Key':CFG.KEY}});
-    if(!r.ok)throw 0;
-    const j=await r.json();
-    blocks=(j.record.blocks||[]).filter(b=>b&&b.id&&b.type);
-  }catch{blocks=def();toast('⚠️ 無法連線，顯示預設資料');}
-  buildNav();
-  // 預設顯示第一個大標題
-  const firstH1 = blocks.find(b=>b.type==='h1');
-  if(firstH1) switchPage(firstH1.id);
-  else render();
+    // 立刻顯示預設資料，不等任何網路
+    blocks = def();
+    buildNav();
+    const first = blocks.find(b=>b.type==='h1');
+    if(first) switchPage(first.id); else render();
+  }catch(err){
+    // 萬一出錯，直接清除載入畫面
+    document.getElementById('cw').innerHTML='<div class="empty-st"><div class="ei">⚠️</div><h3>載入失敗</h3><p>請重新整理頁面</p></div>';
+    console.error('loadData error:', err);
+  }
+
+  // 背景靜默嘗試載入 JSONBin（不影響頁面顯示）
+  setTimeout(()=>{
+    fetch(`https://api.jsonbin.io/v3/b/${CFG.BIN}/latest`, {
+      headers:{'X-Master-Key':CFG.KEY}
+    })
+    .then(r=>{ if(!r.ok) throw 0; return r.json(); })
+    .then(j=>{
+      const remote = (j.record.blocks||[]).filter(b=>b&&b.id&&b.type);
+      if(remote.length > 0){
+        blocks = remote;
+        buildNav();
+        const f = blocks.find(b=>b.type==='h1');
+        if(f) switchPage(f.id);
+        toast('✅ 已載入最新資料');
+      }
+    })
+    .catch(()=>{}); // 連不上就算了，預設資料照顯示
+  }, 500);
 }
 
 async function saveData(){
   setInd('saving');syncDOM();
   try{
     const r=await fetch(`https://api.jsonbin.io/v3/b/${CFG.BIN}`,{
-      method:'PUT',
-      headers:{'Content-Type':'application/json','X-Master-Key':CFG.KEY},
+      method:'PUT',headers:{'Content-Type':'application/json','X-Master-Key':CFG.KEY},
       body:JSON.stringify({blocks})
     });
     if(!r.ok)throw 0;
     setInd('saved');toast('✅ 已儲存');buildNav();
-    const sf=document.getElementById('sv-float');sf.classList.add('saved');setTimeout(()=>sf.classList.remove('saved'),2000);
+    const sf=document.getElementById('sv-float');
+    sf.classList.add('saved');setTimeout(()=>sf.classList.remove('saved'),2000);
+    hasUnsaved=false;
   }catch{setInd('err');toast('❌ 儲存失敗，請重試');}
 }
 
 function syncDOM(){blocks.forEach(b=>{const e=document.getElementById('t-'+b.id);if(e)b.text=e.innerText.trim();});}
 function setInd(s){
-  const e=document.getElementById('svind');
-  e.style.display=s?'':'none';
+  const e=document.getElementById('svind');e.style.display=s?'':'none';
   e.style.color=s==='saving'?'var(--accent)':s==='saved'?'#2D7D46':'var(--danger)';
   e.textContent=s==='saving'?'儲存中…':s==='saved'?'✓ 已儲存':'儲存失敗';
 }
-
-// ── 切換頁面 ──
-function switchPage(h1Id){
-  currentPageId = h1Id;
-  // 更新側邊欄 active 狀態
-  document.querySelectorAll('.si').forEach(n=>n.classList.remove('active'));
-  const navItem = document.querySelector(`.si[data-id="${h1Id}"]`);
-  if(navItem){
-    navItem.classList.add('active');
-    // 展開子項
-    const ch=navItem.nextElementSibling;
-    if(ch&&ch.classList.contains('sc')){
-      navItem.classList.add('open');
-      ch.classList.add('open');
-    }
-  }
-  // 更新頂部麵包屑
-  const h1Block = blocks.find(b=>b.id===h1Id);
-  if(h1Block){
-    document.getElementById('topbar-crumb').innerHTML = `路境行旅 <b>${esc(h1Block.text)}</b>`;
-  }
-  render();
-  // 回到頂部
-  document.getElementById('cw').scrollTop = 0;
-  window.scrollTo(0,0);
-}
-
-// ── 渲染（只顯示目前頁面） ──
 function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
 function hl(s){
   if(!sq||!s)return s;
-  const re=new RegExp(sq.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'),'gi');
+  const re=new RegExp(sq.replace(/[.*+?^${}()|[\]\]/g,'\$&'),'gi');
   return s.replace(re,m=>`<mark>${m}</mark>`);
 }
 function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,5);}
 
-function ea(b){
-  if(!isEdit)return '';
-  return `contenteditable="true" onkeydown="hkey(event)" `;
+function switchPage(h1Id){
+  currentPageId=h1Id;
+  document.querySelectorAll('.si').forEach(n=>n.classList.remove('active'));
+  const ni=document.querySelector(`.si[data-id="${h1Id}"]`);
+  if(ni){ni.classList.add('active');const ch=ni.nextElementSibling;if(ch&&ch.classList.contains('sc')){ni.classList.add('open');ch.classList.add('open');}}
+  const h1b=blocks.find(b=>b.id===h1Id);
+  if(h1b)document.getElementById('topbar-crumb').innerHTML=`路境行旅 <b>${esc(h1b.text)}</b>`;
+  render();window.scrollTo(0,0);
 }
+
+function getPageBlocks(){
+  if(!currentPageId)return[];
+  const hi=blocks.findIndex(b=>b.id===currentPageId);
+  if(hi<0)return[];
+  const ni=blocks.findIndex((b,i)=>i>hi&&b.type==='h1');
+  return ni<0?blocks.slice(hi):blocks.slice(hi,ni);
+}
+
+function ea(b){if(!isEdit)return '';return `contenteditable="true" onkeydown="hkey(event)" `;}
+
 function ctrl(b,i){
   if(!isEdit)return '';
   return `<div class="bc">
@@ -373,87 +348,65 @@ function ctrl(b,i){
   </div>`;
 }
 
-function getPageBlocks(){
-  if(!currentPageId) return [];
-  // 找到目前 h1 的 index
-  const h1i = blocks.findIndex(b=>b.id===currentPageId);
-  if(h1i<0) return [];
-  // 找到下一個 h1 的 index
-  const nexth1i = blocks.findIndex((b,i)=>i>h1i&&b.type==='h1');
-  return nexth1i<0 ? blocks.slice(h1i) : blocks.slice(h1i, nexth1i);
+function insertBar(afterIdx){
+  if(!isEdit)return '';
+  return `<div class="insert-bar">
+    <div class="insert-line"></div>
+    <div class="insert-btns">
+      <button class="insert-btn" onclick="insertBlock('h2',${afterIdx})">＋副標題</button>
+      <button class="insert-btn" onclick="insertBlock('h3',${afterIdx})">＋小標題</button>
+      <button class="insert-btn" onclick="insertBlock('step',${afterIdx})">＋步驟</button>
+      <button class="insert-btn" onclick="insertBlock('note',${afterIdx})">＋注意事項</button>
+      <button class="insert-btn" onclick="insertBlock('img',${afterIdx})">＋圖片</button>
+    </div>
+    <div class="insert-line"></div>
+  </div>`;
 }
 
 function render(){
   const cw=document.getElementById('cw');
-
-  // 搜尋模式：顯示所有符合結果
-  if(sq){
-    renderSearch(cw);
-    return;
-  }
-
-  if(!currentPageId){
-    cw.innerHTML=`<div class="empty-st"><div class="ei">📋</div><h3>請從左側選擇主題</h3><p>點擊左側目錄開始瀏覽</p></div>`;
-    return;
-  }
-
-  const pageBlocks = getPageBlocks();
-  if(!pageBlocks.length){
-    cw.innerHTML=`<div class="empty-st"><div class="ei">📋</div><h3>此頁面尚無內容</h3><p>${isEdit?'點上方按鈕新增區塊':''}</p></div>`;
-    return;
-  }
-
-  let h='',stepN=0;
-  pageBlocks.forEach((b,pi)=>{
-    // 取得在全域 blocks 中的真實 index
-    const i = blocks.indexOf(b);
+  if(sq){renderSearch(cw);return;}
+  if(!currentPageId){cw.innerHTML=`<div class="empty-st"><div class="ei">📋</div><h3>請從左側選擇主題</h3></div>`;return;}
+  const pb=getPageBlocks();
+  if(!pb.length){cw.innerHTML=`<div class="empty-st"><div class="ei">📋</div><h3>此頁面尚無內容</h3><p>${isEdit?'點上方或區塊間的 ＋ 按鈕新增':''}</p></div>`;return;}
+  let h='',sn=0;
+  pb.forEach(b=>{
+    const i=blocks.indexOf(b);
     const tx=hl(esc(b.text||''));
-    if(b.type==='h1'){
-      stepN=0;
-      h+=`<div class="bw">${ctrl(b,i)}<div class="vh1-wrap"><div ${ea(b)}class="vh1" id="t-${b.id}">${tx}</div><div class="vh1-line"></div></div></div>`;
-    }else if(b.type==='h2'){
-      stepN=0;
-      h+=`<div class="bw" id="sec-${b.id}">${ctrl(b,i)}<div class="vh2-bar"></div><div ${ea(b)}class="vh2" id="t-${b.id}">${tx}</div></div>`;
+    if(b.type==='h1'){sn=0;
+      h+=`<div class="bw">${ctrl(b,i)}<div class="vh1-wrap"><div ${ea(b)}class="vh1" id="t-${b.id}">${tx}</div><div class="vh1-line"></div></div></div>${insertBar(i)}`;
+    }else if(b.type==='h2'){sn=0;
+      h+=`<div class="bw" id="sec-${b.id}">${ctrl(b,i)}<div class="vh2-bar"></div><div ${ea(b)}class="vh2" id="t-${b.id}">${tx}</div></div>${insertBar(i)}`;
     }else if(b.type==='h3'){
-      h+=`<div class="bw">${ctrl(b,i)}<div ${ea(b)}class="vh3" id="t-${b.id}">${tx}</div></div>`;
-    }else if(b.type==='step'){
-      stepN++;
-      h+=`<div class="bw">${ctrl(b,i)}<div class="vstw"><div class="vsn">${stepN}</div><div ${ea(b)}class="vst" id="t-${b.id}">${tx}</div></div></div>`;
+      h+=`<div class="bw">${ctrl(b,i)}<div ${ea(b)}class="vh3" id="t-${b.id}">${tx}</div></div>${insertBar(i)}`;
+    }else if(b.type==='step'){sn++;
+      h+=`<div class="bw">${ctrl(b,i)}<div class="vstw"><div class="vsn">${sn}</div><div ${ea(b)}class="vst" id="t-${b.id}">${tx}</div></div></div>${insertBar(i)}`;
     }else if(b.type==='note'){
-      h+=`<div class="bw">${ctrl(b,i)}<div class="vntw"><span class="vnti">⚠️</span><div ${ea(b)}class="vnt" id="t-${b.id}">${tx}</div></div></div>`;
+      h+=`<div class="bw">${ctrl(b,i)}<div class="vntw"><span class="vnti">⚠️</span><div ${ea(b)}class="vnt" id="t-${b.id}">${tx}</div></div></div>${insertBar(i)}`;
     }else if(b.type==='img'){
-      h+=`<div class="bw">${ctrl(b,i)}<div class="vimw"><figure><img src="${esc(b.url||'')}" alt="${esc(b.text||'')}" loading="lazy"><figcaption>${esc(b.text||'')}</figcaption></figure>${isEdit?`<button class="ab" style="margin-top:6px" onclick="openImg('${b.id}')">🔄 更換圖片</button>`:''}</div></div>`;
+      h+=`<div class="bw">${ctrl(b,i)}<div class="vimw"><figure><img src="${esc(b.url||'')}" alt="${esc(b.text||'')}" loading="lazy"><figcaption>${esc(b.text||'')}</figcaption></figure>${isEdit?`<button class="ab" style="margin-top:6px" onclick="openImg('${b.id}')">🔄 更換圖片</button>`:''}</div></div>${insertBar(i)}`;
     }
   });
-  cw.innerHTML = h || `<div class="empty-st"><div class="ei">✨</div><h3>點上方按鈕新增第一個區塊</h3></div>`;
+  cw.innerHTML=h||`<div class="empty-st"><div class="ei">✨</div><h3>點上方按鈕新增第一個區塊</h3></div>`;
 }
 
 function renderSearch(cw){
-  const matched = blocks.filter(b=>(b.text||'').toLowerCase().includes(sq));
-  if(!matched.length){
-    cw.innerHTML=`<div class="empty-st"><div class="ei">🔍</div><h3>找不到「${esc(sq)}」</h3><p>請試試其他關鍵字</p></div>`;
-    return;
-  }
+  const matched=blocks.filter(b=>(b.text||'').toLowerCase().includes(sq));
+  if(!matched.length){cw.innerHTML=`<div class="empty-st"><div class="ei">🔍</div><h3>找不到「${esc(sq)}」</h3></div>`;return;}
   let h='<div style="padding:0 0 16px"><b style="font-size:13px;color:var(--muted)">搜尋結果</b></div>';
-  let stepN=0,lastH1='';
+  let sn=0,lh1='';
   matched.forEach(b=>{
-    const i=blocks.indexOf(b);
-    const tx=hl(esc(b.text||''));
-    // 顯示所屬大標題
-    const h1 = blocks.slice(0,i).reverse().find(x=>x.type==='h1');
-    if(h1&&h1.text!==lastH1){
-      h+=`<div style="font-size:11px;color:var(--accent);font-weight:600;text-transform:uppercase;letter-spacing:.06em;margin:16px 0 6px;cursor:pointer" onclick="switchPage('${h1.id}')">${esc(h1.text)} ›</div>`;
-      lastH1=h1.text;stepN=0;
-    }
-    if(b.type==='h2'){h+=`<div class="bw"><div class="vh2-bar"></div><div class="vh2">${tx}</div></div>`;}
-    else if(b.type==='h3'){h+=`<div class="bw"><div class="vh3">${tx}</div></div>`;}
-    else if(b.type==='step'){stepN++;h+=`<div class="bw"><div class="vstw"><div class="vsn">${stepN}</div><div class="vst">${tx}</div></div></div>`;}
-    else if(b.type==='note'){h+=`<div class="bw"><div class="vntw"><span class="vnti">⚠️</span><div class="vnt">${tx}</div></div></div>`;}
+    const i=blocks.indexOf(b);const tx=hl(esc(b.text||''));
+    const h1=blocks.slice(0,i).reverse().find(x=>x.type==='h1');
+    if(h1&&h1.text!==lh1){h+=`<div style="font-size:11px;color:var(--accent);font-weight:600;text-transform:uppercase;letter-spacing:.06em;margin:16px 0 6px;cursor:pointer" onclick="switchPage('${h1.id}')">${esc(h1.text)} ›</div>`;lh1=h1.text;sn=0;}
+    if(b.type==='h2')h+=`<div class="bw"><div class="vh2-bar"></div><div class="vh2">${tx}</div></div>`;
+    else if(b.type==='h3')h+=`<div class="bw"><div class="vh3">${tx}</div></div>`;
+    else if(b.type==='step'){sn++;h+=`<div class="bw"><div class="vstw"><div class="vsn">${sn}</div><div class="vst">${tx}</div></div></div>`;}
+    else if(b.type==='note')h+=`<div class="bw"><div class="vntw"><span class="vnti">⚠️</span><div class="vnt">${tx}</div></div></div>`;
   });
   cw.innerHTML=h;
 }
 
-// ── 導覽 ──
 function buildNav(){
   const nav=document.getElementById('sn');
   const h1s=blocks.filter(b=>b.type==='h1');
@@ -468,63 +421,34 @@ function buildNav(){
       <span style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(h1.text)}</span>
       ${h2s.length?'<span class="ar">›</span>':''}
     </div>`;
-    if(h2s.length){
-      h+=`<div class="sc">`;
-      h2s.forEach(h2=>{
-        h+=`<div class="sci" data-id="${h2.id}" onclick="jmp2('${h2.id}','${h1.id}',this)">📂 ${esc(h2.text)}</div>`;
-      });
-      h+=`</div>`;
-    }
+    if(h2s.length){h+=`<div class="sc">`;h2s.forEach(h2=>{h+=`<div class="sci" data-id="${h2.id}" onclick="jmp2('${h2.id}','${h1.id}',this)">📂 ${esc(h2.text)}</div>`;});h+=`</div>`;}
   });
   nav.innerHTML=h;
 }
 
-function handleNavClick(h1Id, el){
-  // 展開/收合
+function handleNavClick(h1Id,el){
   const ch=el.nextElementSibling;
-  if(ch&&ch.classList.contains('sc')){
-    el.classList.toggle('open');
-    ch.classList.toggle('open');
-  }
+  if(ch&&ch.classList.contains('sc')){el.classList.toggle('open');ch.classList.toggle('open');}
   switchPage(h1Id);
-  if(window.innerWidth<=768) toggleSb();
+  if(window.innerWidth<=768)toggleSb();
 }
 
-function jmp2(h2Id, h1Id, el){
-  // 先切換到該頁面
+function jmp2(h2Id,h1Id,el){
   switchPage(h1Id);
-  // 等 render 完再滾動
-  setTimeout(()=>{
-    const t=document.getElementById('sec-'+h2Id);
-    if(t) t.scrollIntoView({behavior:'smooth',block:'start'});
-  },150);
+  setTimeout(()=>{const t=document.getElementById('sec-'+h2Id);if(t)t.scrollIntoView({behavior:'smooth',block:'start'});},150);
   document.querySelectorAll('.sci').forEach(n=>n.classList.remove('active'));
   el.classList.add('active');
-  if(window.innerWidth<=768) toggleSb();
+  if(window.innerWidth<=768)toggleSb();
 }
 
-// ── 搜尋 ──
 function doSearch(v){
   sq=v.trim().toLowerCase();
   const bn=document.getElementById('sb-banner');
-  if(sq){
-    const n=blocks.filter(b=>(b.text||'').toLowerCase().includes(sq)).length;
-    bn.style.display='flex';
-    document.getElementById('sbt').textContent=`找到 ${n} 個符合「${v}」的結果`;
-    render();
-  }else{
-    bn.style.display='none';
-    render();
-  }
+  if(sq){const n=blocks.filter(b=>(b.text||'').toLowerCase().includes(sq)).length;bn.style.display='flex';document.getElementById('sbt').textContent=`找到 ${n} 個符合「${v}」的結果`;render();}
+  else{bn.style.display='none';render();}
 }
-function clearSearch(){
-  document.getElementById('si').value='';
-  sq='';
-  document.getElementById('sb-banner').style.display='none';
-  render();
-}
+function clearSearch(){document.getElementById('si').value='';sq='';document.getElementById('sb-banner').style.display='none';render();}
 
-// ── 編輯模式 ──
 function toggleEdit(){
   if(!isEdit){document.getElementById('pwd-modal').style.display='';setTimeout(()=>document.getElementById('pi').focus(),50);}
   else exitEdit();
@@ -543,6 +467,7 @@ function enterEdit(){
   document.getElementById('svbtn').style.display='';
   document.getElementById('sv-float').classList.add('active');
   document.body.classList.add('editing');
+  document.getElementById('chpwd-btn').style.display='';
   render();buildNav();
 }
 function exitEdit(){
@@ -553,51 +478,63 @@ function exitEdit(){
   document.getElementById('svbtn').style.display='none';
   document.getElementById('sv-float').classList.remove('active','saved');
   document.body.classList.remove('editing');
+  document.getElementById('chpwd-btn').style.display='none';
   document.getElementById('svind').style.display='none';
   render();buildNav();
 }
 
-// ── 新增區塊 ──
+function insertBlock(type,afterIdx){
+  if(type==='img'){window._insertAfterIdx=afterIdx;openImg(null);return;}
+  syncDOM();
+  const placeholder={h2:'副標題',h3:'小標題',step:'在這裡輸入步驟說明',note:'在這裡輸入注意事項'}[type]||'';
+  const b={id:uid(),type,text:placeholder};
+  blocks.splice(afterIdx+1,0,b);
+  render();buildNav();
+  setTimeout(()=>{const e=document.getElementById('t-'+b.id);if(e){e.focus();const r=document.createRange();r.selectNodeContents(e);window.getSelection().removeAllRanges();window.getSelection().addRange(r);}},80);
+}
+
 function addBlock(type){
   if(type==='img'){openImg(null);return;}
   syncDOM();
-  // 找到目前頁面最後一個區塊的位置，插入在後面
-  const pageBlocks=getPageBlocks();
-  const lastBlock=pageBlocks[pageBlocks.length-1];
-  const insertAfter=lastBlock?blocks.indexOf(lastBlock):-1;
+  const pb=getPageBlocks();
+  const lb=pb[pb.length-1];
+  const insertAfter=lb?blocks.indexOf(lb):-1;
   const placeholder={h1:'大標題名稱',h2:'副標題',h3:'小標題',step:'在這裡輸入步驟說明',note:'在這裡輸入注意事項'}[type]||'';
   const b={id:uid(),type,text:placeholder};
-  // h1 插在目前頁面之後，其他插在頁面最後
-  if(type==='h1'){
-    blocks.splice(insertAfter+1,0,b);
-  } else {
-    if(insertAfter>=0) blocks.splice(insertAfter+1,0,b);
-    else blocks.push(b);
-  }
-  if(type!=='h1') render();
-  else { buildNav(); switchPage(b.id); }
-  setTimeout(()=>{
-    const e=document.getElementById('t-'+b.id);
-    if(e){e.focus();const r=document.createRange();r.selectNodeContents(e);window.getSelection().removeAllRanges();window.getSelection().addRange(r);}
-  },80);
+  if(type==='h1'){blocks.splice(insertAfter+1,0,b);buildNav();switchPage(b.id);}
+  else{if(insertAfter>=0)blocks.splice(insertAfter+1,0,b);else blocks.push(b);render();}
+  setTimeout(()=>{const e=document.getElementById('t-'+b.id);if(e){e.focus();const r=document.createRange();r.selectNodeContents(e);window.getSelection().removeAllRanges();window.getSelection().addRange(r);}},80);
 }
 
 function mv(i,d){
   syncDOM();
   const j=i+d;
   if(j<0||j>=blocks.length)return;
+  // 防止跨越 h1 邊界
+  const bi=blocks[i],bj=blocks[j];
+  if(!bi||!bj)return;
+  // 不允許把非 h1 移到另一個 h1 的前面（跨頁）
+  if(d===-1&&bj.type==='h1'&&bi.type!=='h1')return;
+  if(d===1&&bi.type==='h1')return; // h1 不能往下移進下一頁
   [blocks[i],blocks[j]]=[blocks[j],blocks[i]];
   render();buildNav();
 }
 function del(i){
   if(!confirm('確定刪除？'))return;
   syncDOM();
+  const b=blocks[i];
   blocks.splice(i,1);
-  render();buildNav();
+  // 如果刪的是目前頁面的 h1，自動跳到第一個 h1
+  if(b&&b.type==='h1'&&b.id===currentPageId){
+    const next=blocks.find(x=>x.type==='h1');
+    if(next){buildNav();switchPage(next.id);}
+    else{currentPageId=null;buildNav();render();}
+  } else {
+    render();buildNav();
+  }
 }
 function hkey(e){if(e.key==='Enter'&&!e.shiftKey)e.preventDefault();}
 
-// ── 圖片上傳 ──
 function openImg(bid){
   imgBid=bid;upUrl='';
   document.getElementById('ic').value='';
@@ -609,25 +546,18 @@ function openImg(bid){
 function closeImg(){document.getElementById('img-modal').style.display='none';imgBid=null;upUrl='';}
 function confirmImg(){
   if(!upUrl){toast('⚠️ 請先上傳圖片');return;}
-  const cap=document.getElementById('ic').value.trim();
-  syncDOM();
+  const cap=document.getElementById('ic').value.trim();syncDOM();
   if(imgBid){const b=blocks.find(x=>x.id===imgBid);if(b){b.url=upUrl;b.text=cap;}}
   else{
-    const pageBlocks=getPageBlocks();
-    const lastBlock=pageBlocks[pageBlocks.length-1];
-    const insertAfter=lastBlock?blocks.indexOf(lastBlock):-1;
     const b={id:uid(),type:'img',url:upUrl,text:cap};
-    if(insertAfter>=0) blocks.splice(insertAfter+1,0,b);
-    else blocks.push(b);
+    const insertAfter=(window._insertAfterIdx!==undefined)?window._insertAfterIdx:(()=>{const pb=getPageBlocks();const lb=pb[pb.length-1];return lb?blocks.indexOf(lb):-1;})();
+    window._insertAfterIdx=undefined;
+    if(insertAfter>=0)blocks.splice(insertAfter+1,0,b);else blocks.push(b);
   }
   closeImg();render();buildNav();
 }
 async function handleFile(input){if(input.files[0])await procImg(input.files[0]);}
-async function handleDrop(e){
-  e.preventDefault();document.getElementById('ua').style.borderColor='';
-  const f=e.dataTransfer.files[0];
-  if(f&&f.type.startsWith('image/'))await procImg(f);
-}
+async function handleDrop(e){e.preventDefault();document.getElementById('ua').style.borderColor='';const f=e.dataTransfer.files[0];if(f&&f.type.startsWith('image/'))await procImg(f);}
 async function procImg(file){
   if(file.size>10*1024*1024){toast('⚠️ 圖片不能超過 10MB');return;}
   const ui=document.getElementById('ui'),us=document.getElementById('us');
@@ -639,23 +569,37 @@ async function procImg(file){
     const j=await r.json();upUrl=j.secure_url;
     ui.innerHTML=`<img src="${upUrl}" class="upr" alt="預覽">`;
     us.textContent='✅ 上傳成功';toast('✅ 圖片上傳成功');
-  }catch{
-    ui.innerHTML='<div class="uai">📷</div><p>點擊或拖曳圖片到這裡</p>';
-    us.textContent='❌ 上傳失敗';toast('❌ 圖片上傳失敗');
-  }
+  }catch{ui.innerHTML='<div class="uai">📷</div><p>點擊或拖曳圖片到這裡</p>';us.textContent='❌ 上傳失敗';toast('❌ 圖片上傳失敗');}
 }
 
-// ── UI ──
-function doSave(){
-  if(!isEdit){toast('⚠️ 請先進入編輯模式');return;}
-  saveData();
+function doSave(){if(!isEdit){toast('⚠️ 請先進入編輯模式');return;}saveData();}
+function openChPwd(){
+  document.getElementById('cp-old').value='';
+  document.getElementById('cp-new').value='';
+  document.getElementById('cp-confirm').value='';
+  document.getElementById('cp-err').style.display='none';
+  document.getElementById('chpwd-modal').style.display='';
+  setTimeout(()=>document.getElementById('cp-old').focus(),50);
 }
-window.addEventListener('scroll',()=>{
-  const btn=document.getElementById('top-btn');
-  if(btn) btn.style.display = window.scrollY>400 ? 'flex' : 'none';
-});
+function closeChPwd(){
+  document.getElementById('chpwd-modal').style.display='none';
+}
+function doChPwd(){
+  const oldV=document.getElementById('cp-old').value;
+  const newV=document.getElementById('cp-new').value;
+  const confirmV=document.getElementById('cp-confirm').value;
+  const errEl=document.getElementById('cp-err');
+  errEl.style.display='none';
+  if(oldV!==CFG.PWD){errEl.textContent='目前密碼錯誤';errEl.style.display='';return;}
+  if(newV.length<4){errEl.textContent='新密碼至少需要 4 個字元';errEl.style.display='';return;}
+  if(newV!==confirmV){errEl.textContent='兩次輸入的新密碼不一致';errEl.style.display='';return;}
+  CFG.PWD=newV;
+  closeChPwd();
+  toast('✅ 密碼已修改成功');
+}
 function toggleSb(){document.getElementById('sidebar').classList.toggle('open');}
 function toast(msg){const e=document.getElementById('toast');e.textContent=msg;e.style.display='flex';clearTimeout(e._t);e._t=setTimeout(()=>e.style.display='none',2800);}
+window.addEventListener('scroll',()=>{const b=document.getElementById('top-btn');if(b)b.style.display=window.scrollY>400?'flex':'none';});
 
 function def(){return[
   {id:uid(),type:'h1',text:'面試者管理'},
@@ -991,15 +935,20 @@ function def(){return[
   {id:uid(),type:'step',text:'封面寫上當天結帳日期 + 交班晚班簽名'},
   {id:uid(),type:'note',text:'做得清楚、乾淨，使人查帳方便是基本素養，請勿偷懶'},
 ];}
+
+// 頁面載入保底：3秒後如果還在載入中就強制顯示
+setTimeout(()=>{
+  const cw=document.getElementById('cw');
+  if(cw&&cw.querySelector('.ld')){
+    blocks=def();buildNav();
+    const f=blocks.find(b=>b.type==='h1');
+    if(f)switchPage(f.id);else render();
+  }
+},3000);
+
 let hasUnsaved=false;
 document.addEventListener('input',e=>{if(isEdit&&e.target.isContentEditable)hasUnsaved=true;});
-window.addEventListener('beforeunload',e=>{
-  if(isEdit&&hasUnsaved){e.preventDefault();e.returnValue='';}
-});
-// 儲存後清除未儲存標記
-const _origSave=saveData;
-saveData=async function(){await _origSave();hasUnsaved=false;};
-
+window.addEventListener('beforeunload',e=>{if(isEdit&&hasUnsaved){e.preventDefault();e.returnValue='';}});
 loadData();
 </script>
 </body>
