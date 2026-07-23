@@ -50,11 +50,9 @@ function goPage(id) {
   var navItem = document.querySelector('.si[data-id="' + id + '"]');
   if (navItem) {
     navItem.classList.add('active');
-    var children = navItem.nextElementSibling;
-    if (children && children.classList.contains('sc')) {
-      navItem.classList.add('open');
-      children.classList.add('open');
-    }
+    // 注意：這裡「不」強制展開子選單。
+    // 是否展開完全交給使用者點擊（navClick 的 toggle 邏輯）決定，
+    // 避免每次切頁都把使用者剛收合的選單又重新打開。
   }
 
   var b = findBlock(id);
