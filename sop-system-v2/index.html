@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>路境行旅 知識庫</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<button class="hbg" onclick="tSb()">☰</button>
+<nav id="sidebar">
+  <div class="sh"><div class="sh-logo">路境行旅文化館</div><div class="sh-sub">知識庫</div></div>
+  <div class="ss"><input type="text" id="si" placeholder="🔍 搜尋關鍵字…" oninput="doSearch(this.value)"></div>
+  <div class="sn" id="sn"></div>
+  <div class="sf"><button class="seb" id="ebt" onclick="tEdit()">✏️ <span id="ebl">進入編輯模式</span></button></div>
+</nav>
+<div id="main">
+  <div class="tb">
+    <div class="tb-cr" id="crumb">路境行旅 <b>知識庫</b></div>
+    <div class="tb-r"><span class="svind" id="svind"></span></div>
+  </div>
+  <div id="banner"><span>🔍</span><span id="bt"></span><button onclick="clrSearch()">✕</button></div>
+  <div id="ebar">
+    <div class="et">
+      <span class="lbl">新增到頁尾：</span>
+      <button class="ab" onclick="addEnd('h1')"><span class="bdg bh1">大標</span>大標題</button>
+      <button class="ab" onclick="addEnd('h2')"><span class="bdg bh2">副標</span>副標題</button>
+      <button class="ab" onclick="addEnd('h3')"><span class="bdg bh3">小標</span>小標題</button>
+      <button class="ab" onclick="addEnd('step')"><span class="bdg bst">步驟</span>步驟</button>
+      <button class="ab" onclick="addEnd('note')"><span class="bdg bnt">注意</span>注意事項</button>
+      <button class="ab" onclick="addEnd('img')"><span class="bdg bim">圖</span>圖片</button>
+    </div>
+    <div class="eh">💡 直接點文字修改｜滑鼠移到區塊間可插入新區塊｜↑↓調順序｜✕刪除｜改完記得按右下角儲存</div>
+  </div>
+  <div class="cw" id="cw"><div style="text-align:center;padding:60px;color:#999"><div class="sp"></div>載入中…</div></div>
+</div>
+<div id="pm" style="display:none"><div class="mb"><div class="mdl">
+  <h3>🔒 進入編輯模式</h3>
+  <label>密碼</label>
+  <input type="password" id="pi" onkeydown="if(event.key==='Enter')ckP()">
+  <div class="perr" id="pe">密碼錯誤</div>
+  <div class="mbtns"><button class="btn bgh" onclick="clP()">取消</button><button class="btn bp" onclick="ckP()">確認</button></div>
+</div></div></div>
+<div id="im" style="display:none"><div class="mb"><div class="mdl">
+  <h3>🖼️ 上傳圖片</h3>
+  <label>說明文字（選填）</label>
+  <input type="text" id="ic">
+  <label>選擇圖片</label>
+  <div class="ua" onclick="document.getElementById('fi').click()" ondragover="event.preventDefault()" ondrop="hDrop(event)">
+    <div id="ui"><div style="font-size:28px">📷</div><p>點擊或拖曳圖片到這裡（最大10MB）</p></div>
+  </div>
+  <div class="ust" id="us"></div>
+  <input type="file" id="fi" accept="image/*" style="display:none" onchange="hFile(this)">
+  <div class="mbtns"><button class="btn bgh" onclick="clI()">取消</button><button class="btn bp" onclick="okI()">插入</button></div>
+</div></div></div>
+<button class="svf" id="svf" onclick="doSave()">💾 儲存</button>
+<div id="toast"></div>
+
+<!-- 模組載入順序：資料 → 工具 → 儲存 → 導覽 → 搜尋 → 編輯 → 上傳 → 渲染 → 應用程式入口 -->
+<script src="data/defaultData.js"></script>
+<script src="js/utils.js"></script>
+<script src="js/storage.js"></script>
+<script src="js/navigation.js"></script>
+<script src="js/search.js"></script>
+<script src="js/editor.js"></script>
+<script src="js/upload.js"></script>
+<script src="js/render.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
