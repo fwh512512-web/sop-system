@@ -261,5 +261,17 @@ function defData(){
     { id: u(), type: 'step', content: { text: '最後用牛皮紙膠帶封邊避免割手，每月需存查妥善保管' } },
     { id: u(), type: 'step', content: { text: '封面寫上當天結帳日期 + 交班晚班簽名' } },
     { id: u(), type: 'note', content: { text: '做得清楚、乾淨，使人查帳方便是基本素養，請勿偷懶' } },
+
+    // ── 專有名詞小辭典 ──
+    // 新人常見的疑問名詞，想到什麼就加什麼，不用一次寫完
+    { id: u(), type: 'h1', content: { text: '專有名詞小辭典' } },
+    { id: u(), type: 'h2', content: { text: '系統／工具名稱' } },
+    { id: u(), type: 'note', content: { text: '這裡收錄文件裡常出現、但沒有另外解釋的系統或工具名稱，方便新人對照' } },
+    { id: u(), type: 'step', content: { text: '旅安 → 房務／訂單管理的 PMS 系統，日常訂房、排房、修改都在這裡操作' } },
+    { id: u(), type: 'step', content: { text: '阿波羅 → 人資系統，新進人員報到、線上必修課程都透過這裡開通' } },
+    { id: u(), type: 'step', content: { text: '釘釘 → 內部簽核系統，零用金請款、工程報修、退款都要在這裡送出申請' } },
+    { id: u(), type: 'step', content: { text: '5FWH → 花蓮文化館的代號，出現在領用單、存量管制卡等單據編號裡' } },
+    { id: u(), type: 'h2', content: { text: '待補充' } },
+    { id: u(), type: 'step', content: { text: '想到還有哪些名詞新人常常聽不懂，直接在這裡新增一條即可' } },
   ];
 }

@@ -12,7 +12,7 @@ function doSearch(v) {
   if (sq) {
     var count = 0;
     for (var i = 0; i < blocks.length; i++) {
-      if (bText(blocks[i]).toLowerCase().indexOf(sq) >= 0) count++;
+      if (searchableText(blocks[i]).toLowerCase().indexOf(sq) >= 0) count++;
     }
     banner.style.display = 'flex';
     document.getElementById('bt').textContent = '找到 ' + count + ' 個符合「' + v + '」的結果';

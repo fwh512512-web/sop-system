@@ -141,7 +141,7 @@ function render() {
 function renderSearch(cw) {
   var matched = [];
   for (var i = 0; i < blocks.length; i++) {
-    if (bText(blocks[i]).toLowerCase().indexOf(sq) >= 0) matched.push(i);
+    if (searchableText(blocks[i]).toLowerCase().indexOf(sq) >= 0) matched.push(i);
   }
   if (!matched.length) {
     cw.innerHTML = '<div class="est"><div class="i">🔍</div><h3>找不到「' + esc(sq) + '」</h3></div>';
@@ -151,7 +151,7 @@ function renderSearch(cw) {
   var html = '', lastH1Text = '';
   for (var k = 0; k < matched.length; k++) {
     var i = matched[k], b = blocks[i];
-    var tx = hl(esc(bText(b)));
+    var tx = hl(esc(searchableText(b)));
 
     var owner = null;
     for (var j = i; j >= 0; j--) { if (blocks[j].type === 'h1') { owner = blocks[j]; break; } }
@@ -163,6 +163,7 @@ function renderSearch(cw) {
 
     if (b.type === 'h2') html += '<div class="bw"><div class="vh2wrap"><div class="vh2bar"></div><div class="vh2">' + tx + '</div></div></div>';
     else if (b.type === 'h3') html += '<div class="bw"><div class="vh3">' + tx + '</div></div>';
+    else if (b.type === 'img') html += '<div class="bw"><div class="vimw"><figure><img src="' + esc(bUrl(b)) + '" loading="lazy"><figcaption>' + tx + '</figcaption></figure></div></div>';
     else if (b.type === 'step') html += '<div class="bw"><div class="vstw"><div class="vsn">•</div><div class="vst">' + tx + '</div></div></div>';
     else if (b.type === 'note') html += '<div class="bw"><div class="vntw"><span>⚠️</span><div class="vnt">' + tx + '</div></div></div>';
   }

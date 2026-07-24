@@ -86,3 +86,12 @@ function migrateAll(arr) {
 function bText(b) { return (b.content && b.content.text) || ''; }
 function bUrl(b) { return (b.content && b.content.url) || ''; }
 function bCaption(b) { return (b.content && b.content.caption) || ''; }
+
+/**
+ * 取得區塊「可被搜尋」的文字內容
+ * 一般文字區塊用 content.text；圖片區塊用 content.caption（說明文字）
+ * 讓搜尋功能能同時涵蓋文字段落和圖片說明，不會漏掉圖片
+ */
+function searchableText(b) {
+  return b.type === 'img' ? bCaption(b) : bText(b);
+}
